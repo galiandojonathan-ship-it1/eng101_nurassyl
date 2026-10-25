@@ -1,0 +1,615 @@
+<title>ENG 101 Final Prep</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a lab-notebook study desk. Sticky tab rail, one view at a time, content column ~72ch, code on graph-paper panels. */
+:root {
+  --paper: #f3f6f9;
+  --panel: #ffffff;
+  --ink: #12202e;
+  --muted: #5a6b7d;
+  --rule: #d3dce6;
+  --grid: #e3eaf1;
+  --accent: #1d5bd0;
+  --accent-soft: #e2ebfb;
+  --mark: #f3b63c;
+  --mark-soft: #fdf1d6;
+  --good: #1d8655;
+  --good-soft: #def3e8;
+  --bad: #c03d36;
+  --bad-soft: #fbe3e1;
+  --code-bg: #eef3f8;
+  --code-ink: #1b2a3a;
+  --tok-kw: #1d5bd0;
+  --tok-str: #a35a00;
+  --tok-num: #8a3fb8;
+  --tok-com: #6f8193;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0d141c; --panel: #141d28; --ink: #e2e9f1; --muted: #8b9bad; --rule: #263342; --grid: #18222e;
+    --accent: #77a6ff; --accent-soft: #1a2a45; --mark: #e9b54c; --mark-soft: #3a2f17;
+    --good: #52c48d; --good-soft: #15322a; --bad: #f07a71; --bad-soft: #3a1d1c;
+    --code-bg: #0f1923; --code-ink: #d8e2ec; --tok-kw: #82b0ff; --tok-str: #f0b46a; --tok-num: #d39bf5; --tok-com: #6d8093;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0d141c; --panel: #141d28; --ink: #e2e9f1; --muted: #8b9bad; --rule: #263342; --grid: #18222e;
+  --accent: #77a6ff; --accent-soft: #1a2a45; --mark: #e9b54c; --mark-soft: #3a2f17;
+  --good: #52c48d; --good-soft: #15322a; --bad: #f07a71; --bad-soft: #3a1d1c;
+  --code-bg: #0f1923; --code-ink: #d8e2ec; --tok-kw: #82b0ff; --tok-str: #f0b46a; --tok-num: #d39bf5; --tok-com: #6d8093;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--panel);
+}
+.wrap {
+  max-width: 1040px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+code, pre, .mono { font-family: var(--font-mono); }
+code { font-size: 0.88em; background: var(--code-bg); color: var(--code-ink); padding: 0.08em 0.35em; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.15; margin: 0; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Masthead */
+.mast { background: var(--panel); border-bottom: 1px solid var(--rule); }
+.mast .wrap { padding-block: 28px 18px; display: grid; gap: 10px; }
+.course { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.mast h1 { font-size: clamp(2rem, 6vw, 3.1rem); font-weight: 800; letter-spacing: -0.02em; }
+.mast h1 span { color: var(--accent); }
+.steps { display: flex; flex-wrap: wrap; gap: 6px; font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); }
+.steps b { color: var(--ink); font-weight: 600; }
+.steps i { font-style: normal; color: var(--rule); }
+
+/* Tabs */
+.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--panel); border-bottom: 1px solid var(--rule); }
+.tabs .wrap { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.tabs .wrap::-webkit-scrollbar { display: none; }
+.tab {
+  flex: none; background: none; border: 0; padding: 12px 12px 10px; cursor: pointer;
+  font-weight: 600; font-size: 0.93rem; color: var(--muted); border-bottom: 3px solid transparent;
+}
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--mark); }
+
+main .wrap { padding-block: 28px 64px; }
+section[role="tabpanel"] { display: grid; gap: 22px; }
+.lede { max-width: 68ch; color: var(--muted); margin: 0; }
+.h2 { font-size: clamp(1.45rem, 3.4vw, 1.9rem); font-weight: 800; letter-spacing: -0.01em; }
+.label { font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+/* Chips (filters) */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  border: 1px solid var(--rule); background: var(--panel); border-radius: 999px; padding: 5px 12px;
+  font-size: 0.86rem; cursor: pointer; font-weight: 500;
+}
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.btn {
+  border: 1px solid var(--rule); background: var(--panel); border-radius: 8px; padding: 8px 14px;
+  cursor: pointer; font-weight: 600; font-size: 0.92rem;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--panel); border-color: var(--accent); }
+.btn.good { background: var(--good-soft); color: var(--good); border-color: transparent; }
+.btn.bad { background: var(--bad-soft); color: var(--bad); border-color: transparent; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* Overview */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.stat { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 4px; }
+.stat .n { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.stat .n small { font-size: 0.95rem; color: var(--muted); font-weight: 600; }
+.meter { height: 6px; background: var(--grid); border-radius: 3px; overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .4s; }
+.stat .k { font-size: 0.84rem; color: var(--muted); }
+
+.weekmap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.wk {
+  text-align: left; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r);
+  padding: 14px 16px; cursor: pointer; display: grid; gap: 6px; align-content: start;
+}
+.wk:hover { border-color: var(--accent); }
+.wk .tag { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); font-weight: 600; }
+.wk h3 { font-size: 1.05rem; font-weight: 600; }
+.wk p { margin: 0; font-size: 0.86rem; color: var(--muted); }
+
+.two { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r); padding: 18px 20px; display: grid; gap: 12px; min-width: 0; }
+.check { display: grid; gap: 2px; }
+.check label { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 7px 0; border-top: 1px solid var(--grid); cursor: pointer; font-size: 0.94rem; align-items: start; }
+.check label:first-child { border-top: 0; }
+.check input { margin-top: 4px; accent-color: var(--accent); width: 16px; height: 16px; }
+.check input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--rule); }
+.method { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; counter-reset: m; }
+.method li { display: grid; grid-template-columns: 30px 1fr; gap: 10px; font-size: 0.94rem; counter-increment: m; }
+.method li::before { content: counter(m); font-family: var(--font-display); font-weight: 800; color: var(--mark); font-size: 1.3rem; line-height: 1.2; }
+.method b { display: block; }
+
+/* Weeks */
+.weekhead { display: grid; gap: 8px; }
+.weekhead .lect { font-family: var(--font-mono); font-size: 0.82rem; color: var(--muted); }
+.big {
+  margin: 0; font-size: 1.12rem; font-weight: 500; max-width: 70ch; padding: 12px 16px;
+  background: var(--mark-soft); border-radius: 8px; border-left: 4px solid var(--mark);
+}
+.points { margin: 0; padding: 0; list-style: none; display: grid; gap: 0; max-width: 78ch; }
+.points li { padding: 9px 0 9px 22px; border-top: 1px solid var(--grid); position: relative; }
+.points li::before { content: ""; position: absolute; left: 4px; top: 18px; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.pits { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.pits li { padding: 8px 12px; background: var(--bad-soft); border-radius: 8px; font-size: 0.93rem; }
+.pits li::before { content: "✕ "; color: var(--bad); font-weight: 700; }
+.explain { display: grid; gap: 8px; }
+details.ex { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r); }
+details.ex summary { cursor: pointer; padding: 12px 16px; font-weight: 500; list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 12px; }
+details.ex summary::-webkit-details-marker { display: none; }
+details.ex summary::after { content: "Show answer"; font-size: 0.78rem; color: var(--accent); font-weight: 600; white-space: nowrap; align-self: center; }
+details.ex[open] summary::after { content: "Hide"; }
+details.ex .ans { padding: 0 16px 14px; color: var(--ink); border-top: 1px dashed var(--rule); padding-top: 12px; margin: 0 0 0; }
+
+/* Code */
+.code {
+  margin: 0; padding: 14px 16px; overflow-x: auto; font-size: 0.86rem; line-height: 1.6;
+  background-color: var(--code-bg); color: var(--code-ink); border-radius: 8px;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 100% 1.6em, 1.6em 100%;
+  background-position: 0 14px, 0 0;
+  tab-size: 4;
+}
+.code code { background: none; padding: 0; font-size: inherit; color: inherit; }
+.code .kw { color: var(--tok-kw); font-weight: 600; }
+.code .st { color: var(--tok-str); }
+.code .nu { color: var(--tok-num); }
+.code .co { color: var(--tok-com); font-style: italic; }
+.out {
+  margin: 0; padding: 12px 16px; font-family: var(--font-mono); font-size: 0.86rem; white-space: pre-wrap;
+  border-radius: 8px; background: var(--ink); color: var(--paper); overflow-x: auto;
+}
+
+/* Drills */
+.drills { display: grid; gap: 16px; }
+.drill { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r); padding: 16px 18px; display: grid; gap: 12px; min-width: 0; }
+.drill header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: baseline; }
+.drill h3 { font-size: 1.05rem; font-weight: 600; }
+.pill { font-family: var(--font-mono); font-size: 0.74rem; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; white-space: nowrap; }
+.pill.ok { background: var(--good-soft); color: var(--good); }
+.pill.no { background: var(--bad-soft); color: var(--bad); }
+.drill textarea {
+  width: 100%; min-height: 64px; resize: vertical; font-family: var(--font-mono); font-size: 0.86rem;
+  background: var(--paper); color: var(--ink); border: 1px dashed var(--rule); border-radius: 8px; padding: 10px 12px;
+}
+.why { margin: 0; font-size: 0.94rem; max-width: 75ch; }
+.drillbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center; }
+.count { font-size: 0.88rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Quiz */
+.quizbox { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r); padding: 22px; display: grid; gap: 16px; max-width: 760px; }
+.qmeta { display: flex; justify-content: space-between; gap: 8px; font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.qtext { font-size: 1.12rem; font-weight: 500; margin: 0; }
+.opts { display: grid; gap: 8px; }
+.opt {
+  text-align: left; border: 1px solid var(--rule); background: var(--paper); border-radius: 8px; padding: 11px 14px;
+  cursor: pointer; display: grid; grid-template-columns: 26px 1fr; gap: 8px; align-items: start;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt .l { font-family: var(--font-mono); font-weight: 600; color: var(--muted); }
+.opt:disabled { cursor: default; }
+.opt.right { background: var(--good-soft); border-color: var(--good); }
+.opt.wrong { background: var(--bad-soft); border-color: var(--bad); }
+.feedback { margin: 0; padding: 12px 14px; border-radius: 8px; background: var(--accent-soft); font-size: 0.95rem; }
+.result { text-align: left; display: grid; gap: 10px; }
+.result .score { font-family: var(--font-display); font-size: 3rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.missed { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 0.92rem; }
+
+/* Flashcards */
+.cardstage { display: grid; gap: 14px; max-width: 640px; }
+.flash {
+  min-height: 210px; border: 1px solid var(--rule); border-radius: 14px; background: var(--panel); cursor: pointer;
+  padding: 26px; display: grid; align-content: center; gap: 10px; text-align: left; width: 100%;
+  background-image: repeating-linear-gradient(var(--panel) 0 31px, var(--grid) 31px 32px);
+}
+.flash .side { font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.flash .term { font-family: var(--font-display); font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 800; }
+.flash .def { font-size: 1.05rem; }
+
+/* Cheat sheet */
+.sheet { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.tbl { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--r); padding: 14px 16px; min-width: 0; display: grid; gap: 8px; }
+.tbl.wide { grid-column: 1 / -1; }
+.tbl h3 { font-size: 1.02rem; font-weight: 600; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+th { text-align: left; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--rule); }
+td { padding: 6px 8px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+td:first-child { font-family: var(--font-mono); font-size: 0.84rem; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+
+footer { color: var(--muted); font-size: 0.82rem; }
+
+@media (max-width: 860px) {
+  .stats, .weekmap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .two, .sheet { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 420px) {
+  .weekmap { grid-template-columns: minmax(0, 1fr); }
+  .quizbox { padding: 16px; }
+  td:first-child { white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="course">ENG 101 · Programming for Engineers · Nazarbayev University · Fall 2026</div>
+    <h1>Final Prep, <span>Weeks 1–14</span></h1>
+    <div class="steps" aria-label="Study method"><b>Predict</b><i>→</i><b>Trace</b><i>→</i><b>Explain</b><i>→</i><b>Test</b><i>→</i><b>Interpret</b></div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="wrap" role="tablist">
+    <button class="tab" role="tab" data-view="overview" id="tab-overview">Overview</button>
+    <button class="tab" role="tab" data-view="weeks" id="tab-weeks">Weeks</button>
+    <button class="tab" role="tab" data-view="drills" id="tab-drills">Trace drills</button>
+    <button class="tab" role="tab" data-view="quiz" id="tab-quiz">Quiz</button>
+    <button class="tab" role="tab" data-view="cards" id="tab-cards">Flashcards</button>
+    <button class="tab" role="tab" data-view="sheet" id="tab-sheet">Cheat sheet</button>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <section role="tabpanel" id="view-overview" aria-labelledby="tab-overview">
+      <div class="stats" id="stats"></div>
+      <div class="weekhead">
+        <h2 class="h2">Course map</h2>
+        <p class="lede">Your notes cover Weeks 7 and 9–14. Week 14 reviews everything from Week 1, so the early foundations are here too. Pick a week to read its key ideas, common mistakes and explain-it questions.</p>
+      </div>
+      <div class="weekmap" id="weekmap"></div>
+      <div class="two">
+        <div class="panel">
+          <h2 class="h2" style="font-size:1.3rem">Readiness checklist</h2>
+          <p class="lede" style="font-size:.9rem">Tick an item only when you can do it on a fresh example without notes.</p>
+          <div class="check" id="checklist"></div>
+        </div>
+        <div class="panel">
+          <h2 class="h2" style="font-size:1.3rem">How to use this</h2>
+          <ol class="method">
+            <li><span><b>Predict</b>Write the output, return value or error before revealing anything.</span></li>
+            <li><span><b>Trace</b>Track assignments, branches, loop visits and returns. Draw names pointing to objects.</span></li>
+            <li><span><b>Compare</b>Find the first place your reasoning and the answer differ.</span></li>
+            <li><span><b>Vary</b>Change one input in your head and predict again.</span></li>
+            <li><span><b>Log errors</b>Mark misses. The drills tab can show only the ones you got wrong.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section role="tabpanel" id="view-weeks" aria-labelledby="tab-weeks" hidden>
+      <div class="chips" id="weekchips" aria-label="Choose a week"></div>
+      <div id="weekbody" style="display:grid;gap:22px"></div>
+    </section>
+
+    <section role="tabpanel" id="view-drills" aria-labelledby="tab-drills" hidden>
+      <div class="weekhead">
+        <h2 class="h2">Predict the output</h2>
+        <p class="lede">Every snippet comes from your notes and was run to confirm the answer. Type your prediction, reveal, then mark it.</p>
+      </div>
+      <div class="drillbar">
+        <div class="chips" id="drillchips"></div>
+        <span class="count" id="drillcount"></span>
+      </div>
+      <div class="drills" id="drills"></div>
+    </section>
+
+    <section role="tabpanel" id="view-quiz" aria-labelledby="tab-quiz" hidden>
+      <div class="weekhead">
+        <h2 class="h2">Quiz</h2>
+        <p class="lede">Multiple choice with an explanation after each answer. Choose a week or mix them all.</p>
+      </div>
+      <div class="chips" id="quizchips"></div>
+      <div id="quiz"></div>
+    </section>
+
+    <section role="tabpanel" id="view-cards" aria-labelledby="tab-cards" hidden>
+      <div class="weekhead">
+        <h2 class="h2">Flashcards</h2>
+        <p class="lede">Terms from the glossaries. Tap the card to flip it, then sort it into “Know it” or “Again”.</p>
+      </div>
+      <div class="chips" id="cardchips"></div>
+      <div id="cards"></div>
+    </section>
+
+    <section role="tabpanel" id="view-sheet" aria-labelledby="tab-sheet" hidden>
+      <div class="weekhead">
+        <h2 class="h2">Cheat sheet</h2>
+        <p class="lede">One-page reference for the facts you'll reach for most.</p>
+      </div>
+      <div class="sheet" id="sheet"></div>
+    </section>
+
+    <footer>Built from the ENG 101 Detailed Reading Notes (Yanwei Wang). For practice only; Moodle has the official assessment rules.</footer>
+  </div>
+</main>
+
+<script>
+const DATA = /*DATA*/;
+
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const weekById = Object.fromEntries(DATA.weeks.map(w => [w.id, w]));
+const weekLabel = id => (weekById[id] || {}).label || id;
+
+// Per-viewer progress, kept only in this browser.
+const STORE_KEY = "eng101-prep-v1";
+let store = { drills: {}, cards: {}, check: {}, quizBest: {}, week: "w7" };
+try { const raw = localStorage.getItem(STORE_KEY); if (raw) store = Object.assign(store, JSON.parse(raw)); } catch (e) {}
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {} }
+
+// ---------- Python highlighter ----------
+const KW = new Set("False None True and as assert break class continue def del elif else except finally for from global if import in is lambda not or pass raise return try while with".split(" "));
+function highlight(src) {
+  const re = /(#[^\n]*)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b)|([A-Za-z_]\w*)/g;
+  let out = "", last = 0, m;
+  while ((m = re.exec(src))) {
+    out += esc(src.slice(last, m.index));
+    if (m[1]) out += `<span class="co">${esc(m[1])}</span>`;
+    else if (m[2]) out += `<span class="st">${esc(m[2])}</span>`;
+    else if (m[3]) out += `<span class="nu">${m[3]}</span>`;
+    else out += KW.has(m[4]) ? `<span class="kw">${m[4]}</span>` : esc(m[4]);
+    last = re.lastIndex;
+  }
+  return out + esc(src.slice(last));
+}
+
+// ---------- Tabs ----------
+const VIEWS = ["overview", "weeks", "drills", "quiz", "cards", "sheet"];
+function show(view) {
+  if (!VIEWS.includes(view)) view = "overview";
+  for (const v of VIEWS) {
+    $("#view-" + v).hidden = v !== view;
+    $("#tab-" + v).setAttribute("aria-selected", v === view ? "true" : "false");
+  }
+  if (view === "overview") renderStats();
+  try { history.replaceState(null, "", "#" + view); } catch (e) {}
+  window.scrollTo({ top: 0 });
+}
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => show(t.dataset.view)));
+
+function chips(el, items, current, onPick) {
+  el.innerHTML = items.map(([id, label]) =>
+    `<button class="chip" data-id="${id}" aria-pressed="${id === current}">${esc(label)}</button>`).join("");
+  el.onclick = e => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    el.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c === b ? "true" : "false"));
+    onPick(b.dataset.id);
+  };
+}
+const weekChipItems = (withAll) => (withAll ? [["all", "All weeks"]] : []).concat(DATA.weeks.map(w => [w.id, w.label]));
+
+// ---------- Overview ----------
+function renderStats() {
+  const dTotal = DATA.drills.length;
+  const dDone = Object.values(store.drills).filter(v => v === "ok").length;
+  const dMiss = Object.values(store.drills).filter(v => v === "no").length;
+  const cTotal = DATA.cards.length;
+  const cKnown = Object.values(store.cards).filter(v => v === "known").length;
+  const kTotal = DATA.checklist.length;
+  const kDone = Object.values(store.check).filter(Boolean).length;
+  const best = store.quizBest.all;
+  const tile = (n, of, k, pct) => `<div class="stat"><div class="n">${n}<small>${of}</small></div><div class="meter"><i style="width:${pct}%"></i></div><div class="k">${k}</div></div>`;
+  $("#stats").innerHTML =
+    tile(dDone, " / " + dTotal, `Drills correct${dMiss ? ` · ${dMiss} to redo` : ""}`, 100 * dDone / dTotal) +
+    tile(best != null ? best + "%" : "–", "", "Best mixed-quiz score", best || 0) +
+    tile(cKnown, " / " + cTotal, "Flashcards known", 100 * cKnown / cTotal) +
+    tile(kDone, " / " + kTotal, "Checklist items ticked", 100 * kDone / kTotal);
+}
+$("#weekmap").innerHTML = DATA.weeks.map(w =>
+  `<button class="wk" data-week="${w.id}"><span class="tag">${esc(w.label)} · ${esc(w.lectures)}</span><h3>${esc(w.title)}</h3><p>${w.big}</p></button>`).join("");
+$("#weekmap").onclick = e => { const b = e.target.closest(".wk"); if (b) { openWeek(b.dataset.week); show("weeks"); } };
+$("#checklist").innerHTML = DATA.checklist.map((c, i) =>
+  `<label><input type="checkbox" id="chk-${i}" data-i="${i}" ${store.check[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("");
+$("#checklist").onchange = e => { const i = e.target.dataset.i; store.check[i] = e.target.checked; save(); renderStats(); };
+
+// ---------- Weeks ----------
+function openWeek(id) {
+  store.week = id; save();
+  chips($("#weekchips"), weekChipItems(false), id, openWeek);
+  const w = weekById[id];
+  const nDrills = DATA.drills.filter(d => d.week === id).length;
+  const nQuiz = DATA.quiz.filter(q => q.week === id).length;
+  $("#weekbody").innerHTML = `
+    <div class="weekhead">
+      <span class="lect">${esc(w.label)} · ${esc(w.lectures)}</span>
+      <h2 class="h2">${esc(w.title)}</h2>
+    </div>
+    <p class="big">${w.big}</p>
+    <div class="two">
+      <div style="display:grid;gap:10px;min-width:0">
+        <span class="label">Key ideas</span>
+        <ul class="points">${w.points.map(p => `<li>${p}</li>`).join("")}</ul>
+      </div>
+      <div style="display:grid;gap:18px;min-width:0">
+        <div style="display:grid;gap:10px"><span class="label">Common mistakes</span><ul class="pits">${w.pitfalls.map(p => `<li>${p}</li>`).join("")}</ul></div>
+        <div class="row">
+          <button class="btn" data-go="drills">${nDrills} trace drills</button>
+          <button class="btn" data-go="quiz">${nQuiz} quiz questions</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;gap:10px">
+      <span class="label">Explain it (answer out loud first)</span>
+      <div class="explain">${w.explain.map(([q, a]) => `<details class="ex"><summary>${q}</summary><p class="ans">${a}</p></details>`).join("")}</div>
+    </div>`;
+  $("#weekbody").querySelectorAll("[data-go]").forEach(b => b.onclick = () => {
+    if (b.dataset.go === "drills") { drillFilter = id; renderDrills(); } else { startQuiz(id); }
+    show(b.dataset.go);
+  });
+}
+
+// ---------- Drills ----------
+let drillFilter = "all";
+function renderDrills() {
+  chips($("#drillchips"), weekChipItems(true).concat([["missed", "Missed only"]]), drillFilter, id => { drillFilter = id; renderDrills(); });
+  const list = DATA.drills.map((d, i) => ({ ...d, i })).filter(d =>
+    drillFilter === "all" ? true : drillFilter === "missed" ? store.drills[d.i] === "no" : d.week === drillFilter);
+  const done = list.filter(d => store.drills[d.i] === "ok").length;
+  $("#drillcount").textContent = `${done} of ${list.length} correct`;
+  if (!list.length) { $("#drills").innerHTML = `<p class="lede">Nothing here yet. Drills you mark as missed will collect in this list.</p>`; return; }
+  $("#drills").innerHTML = list.map(d => {
+    const st = store.drills[d.i];
+    const pill = st === "ok" ? `<span class="pill ok">got it</span>` : st === "no" ? `<span class="pill no">redo</span>` : `<span class="pill">${esc(weekLabel(d.week))}</span>`;
+    return `<article class="drill" data-i="${d.i}">
+      <header><h3>${esc(d.title)}</h3>${pill}</header>
+      <pre class="code"><code>${highlight(d.code)}</code></pre>
+      <textarea id="pred-${d.i}" aria-label="Your prediction" placeholder="Your predicted output…"></textarea>
+      <div class="row"><button class="btn primary" data-act="reveal">Reveal output</button></div>
+      <div class="reveal" hidden style="display:grid;gap:10px">
+        <span class="label">Actual output</span>
+        <pre class="out">${esc(d.out)}</pre>
+        <p class="why">${esc(d.why)}</p>
+        <div class="row"><button class="btn good" data-act="ok">I got it</button><button class="btn bad" data-act="no">I missed it</button></div>
+      </div>
+    </article>`;
+  }).join("");
+}
+$("#drills").addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const card = b.closest(".drill"); const i = card.dataset.i;
+  if (b.dataset.act === "reveal") { $(".reveal", card).hidden = false; b.hidden = true; return; }
+  store.drills[i] = b.dataset.act; save();
+  const pill = $("header .pill", card);
+  pill.className = "pill " + b.dataset.act; pill.textContent = b.dataset.act === "ok" ? "got it" : "redo";
+  const list = [...document.querySelectorAll(".drill")];
+  const done = list.filter(c => store.drills[c.dataset.i] === "ok").length;
+  $("#drillcount").textContent = `${done} of ${list.length} correct`;
+});
+
+// ---------- Quiz ----------
+let quiz = null, quizWeek = "all";
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function startQuiz(week) {
+  quizWeek = week || quizWeek;
+  chips($("#quizchips"), weekChipItems(true), quizWeek, w => startQuiz(w));
+  let pool = DATA.quiz.filter(q => quizWeek === "all" || q.week === quizWeek);
+  pool = shuffle(pool).slice(0, quizWeek === "all" ? 20 : pool.length);
+  quiz = { qs: pool.map(q => { const order = shuffle(q.o.map((_, k) => k)); return { ...q, order }; }), i: 0, score: 0, missed: [] };
+  renderQuestion();
+}
+function renderQuestion() {
+  const q = quiz.qs[quiz.i];
+  $("#quiz").innerHTML = `<div class="quizbox">
+    <div class="qmeta"><span>Question ${quiz.i + 1} of ${quiz.qs.length} · ${esc(weekLabel(q.week))}</span><span>Score ${quiz.score}</span></div>
+    <div class="meter"><i style="width:${100 * quiz.i / quiz.qs.length}%"></i></div>
+    <p class="qtext">${q.q}</p>
+    <div class="opts">${q.order.map((k, n) => `<button class="opt" data-k="${k}"><span class="l">${"ABCD"[n]}</span><span>${q.o[k]}</span></button>`).join("")}</div>
+    <div id="qfoot" style="display:grid;gap:12px"></div>
+  </div>`;
+}
+$("#quiz").addEventListener("click", e => {
+  const o = e.target.closest(".opt");
+  if (o && !o.disabled) {
+    const q = quiz.qs[quiz.i]; const k = +o.dataset.k; const right = k === q.a;
+    if (right) quiz.score++; else quiz.missed.push(q);
+    document.querySelectorAll(".opt").forEach(b => { b.disabled = true; if (+b.dataset.k === q.a) b.classList.add("right"); });
+    if (!right) o.classList.add("wrong");
+    $("#qfoot").innerHTML = `<p class="feedback"><b>${right ? "Correct." : "Not quite."}</b> ${q.e}</p>
+      <div class="row"><button class="btn primary" data-q="next">${quiz.i + 1 < quiz.qs.length ? "Next question" : "See result"}</button></div>`;
+    return;
+  }
+  const b = e.target.closest("[data-q]"); if (!b) return;
+  if (b.dataset.q === "next") {
+    quiz.i++;
+    if (quiz.i < quiz.qs.length) renderQuestion(); else finishQuiz();
+  } else if (b.dataset.q === "again") startQuiz(quizWeek);
+});
+function finishQuiz() {
+  const pct = Math.round(100 * quiz.score / quiz.qs.length);
+  if (store.quizBest[quizWeek] == null || pct > store.quizBest[quizWeek]) { store.quizBest[quizWeek] = pct; save(); }
+  $("#quiz").innerHTML = `<div class="quizbox result">
+    <span class="label">${quizWeek === "all" ? "Mixed quiz" : esc(weekLabel(quizWeek))} result</span>
+    <div class="score">${quiz.score} / ${quiz.qs.length}</div>
+    <p class="lede">${pct}% · best so far ${store.quizBest[quizWeek]}%</p>
+    ${quiz.missed.length ? `<span class="label">Review these</span><ul class="missed">${quiz.missed.map(q => `<li>${q.q}<br><span style="color:var(--good)">${q.o[q.a]}</span></li>`).join("")}</ul>` : `<p>No misses. Try another week or the mixed set.</p>`}
+    <div class="row"><button class="btn primary" data-q="again">New quiz</button></div>
+  </div>`;
+}
+
+// ---------- Flashcards ----------
+let deck = null, cardWeek = "all";
+function startCards(week) {
+  cardWeek = week || cardWeek;
+  const items = weekChipItems(true).filter(([id]) => id === "all" || DATA.cards.some(c => c.week === id));
+  chips($("#cardchips"), items, cardWeek, w => startCards(w));
+  const pool = DATA.cards.map((c, i) => ({ ...c, i })).filter(c => cardWeek === "all" || c.week === cardWeek);
+  const unknown = pool.filter(c => store.cards[c.i] !== "known");
+  deck = { cards: shuffle(unknown.length ? unknown : pool), pos: 0, flipped: false, total: pool.length };
+  renderCard();
+}
+function renderCard() {
+  const known = DATA.cards.filter((c, i) => (cardWeek === "all" || c.week === cardWeek) && store.cards[i] === "known").length;
+  if (deck.pos >= deck.cards.length) {
+    $("#cards").innerHTML = `<div class="cardstage"><div class="panel"><h3 class="h2" style="font-size:1.3rem">Deck finished</h3>
+      <p class="lede">${known} of ${deck.total} known in this set.</p>
+      <div class="row"><button class="btn primary" data-c="restart">Go again</button><button class="btn" data-c="reset">Reset this set</button></div></div></div>`;
+    return;
+  }
+  const c = deck.cards[deck.pos];
+  $("#cards").innerHTML = `<div class="cardstage">
+    <div class="qmeta"><span>Card ${deck.pos + 1} of ${deck.cards.length} · ${esc(weekLabel(c.week))}</span><span>${known} / ${deck.total} known</span></div>
+    <button class="flash" data-c="flip" aria-label="Flip card">
+      <span class="side">${deck.flipped ? "Definition" : "Term"}</span>
+      ${deck.flipped ? `<span class="def">${c.def}</span>` : `<span class="term">${esc(c.term)}</span>`}
+    </button>
+    <div class="row">${deck.flipped
+      ? `<button class="btn good" data-c="known">Know it</button><button class="btn bad" data-c="again">Again</button>`
+      : `<button class="btn primary" data-c="flip">Show definition</button><button class="btn" data-c="skip">Skip</button>`}</div>
+  </div>`;
+}
+$("#cards").addEventListener("click", e => {
+  const b = e.target.closest("[data-c]"); if (!b) return;
+  const act = b.dataset.c;
+  if (act === "flip") { deck.flipped = !deck.flipped; renderCard(); return; }
+  if (act === "restart") { startCards(cardWeek); return; }
+  if (act === "reset") { DATA.cards.forEach((c, i) => { if (cardWeek === "all" || c.week === cardWeek) delete store.cards[i]; }); save(); startCards(cardWeek); return; }
+  const c = deck.cards[deck.pos];
+  if (act === "known") store.cards[c.i] = "known";
+  if (act === "again") { store.cards[c.i] = "again"; deck.cards.push(c); }
+  save(); deck.pos++; deck.flipped = false; renderCard();
+});
+
+// ---------- Cheat sheet ----------
+$("#sheet").innerHTML = DATA.sheet.map(t => `<div class="tbl${t.head.length > 3 || t.title.startsWith("When") ? " wide" : ""}">
+  <h3>${esc(t.title)}</h3>
+  <div class="scroll"><table><thead><tr>${t.head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+  <tbody>${t.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></div>`).join("");
+
+// ---------- Boot ----------
+openWeek(weekById[store.week] ? store.week : "w7");
+renderDrills();
+startQuiz("all");
+startCards("all");
+show((location.hash || "#overview").slice(1));
+</script>
